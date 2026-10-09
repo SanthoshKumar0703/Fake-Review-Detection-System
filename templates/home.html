@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}Verdict — Fake Review Detection System{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">Case file engine · NLP + ML</span>
+      <h1>Every review<br>tells on itself.<br><em>Read the tells.</em></h1>
+      <p class="hero-lede">Verdict runs customer reviews through an NLP and machine-learning pipeline that scores authenticity, surfaces the exact phrases that gave it away, and turns a wall of text into a decision you can trust.</p>
+      <div class="hero-actions">
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Open a case — it's free</a>
+        <a href="#how-it-works" class="btn btn-ghost btn-lg">See how it works</a>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><span class="hero-meta-num">2</span><span class="hero-meta-label">Verdicts issued</span></div>
+        <div class="hero-meta-item"><span class="hero-meta-num">8</span><span class="hero-meta-label">Signals tracked</span></div>
+        <div class="hero-meta-item"><span class="hero-meta-num">&lt;1s</span><span class="hero-meta-label">Per-review scan time</span></div>
+      </div>
+    </div>
+
+    <div class="scanner-card">
+      <div class="scanner-card-head">
+        <span class="scanner-tag">Exhibit A — Incoming Review</span>
+        <span class="scanner-id">#REV-88213</span>
+      </div>
+      <p class="scanner-text">&ldquo;WOW just WOW! This blender exceeded all my expectations!!! 10/10 would buy again and again!!! Amazing quality amazing price amazing everything!!!&rdquo;</p>
+      <div class="scanner-viewport">
+        <div class="scanline" aria-hidden="true"></div>
+        <div class="verdict-row">
+          <span class="verdict-stamp">Fake</span>
+          <div class="confidence-readout">
+            <span class="num">96.4%</span>
+            <span class="lbl">Confidence</span>
+          </div>
+        </div>
+        <div class="scanner-flags">
+          <span class="scanner-flag">Excessive exclamation marks</span>
+          <span class="scanner-flag">Generic superlatives</span>
+          <span class="scanner-flag">No specific details</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stat-band">
+  <div class="container" style="display:contents">
+    <div class="stat-band-item"><div class="stat-band-num">TF-IDF</div><div class="stat-band-label">Text vectorization</div></div>
+    <div class="stat-band-item"><div class="stat-band-num">NLP</div><div class="stat-band-label">Pattern &amp; sentiment analysis</div></div>
+    <div class="stat-band-item"><div class="stat-band-num">CSV/PDF</div><div class="stat-band-label">Exportable case reports</div></div>
+    <div class="stat-band-item"><div class="stat-band-num">Bulk</div><div class="stat-band-label">Upload &amp; batch-analyze</div></div>
+  </div>
+</section>
+
+<section class="section section-dark" id="features">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-eyebrow">Capabilities</span>
+      <h2>Built for people who don't trust a five-star average.</h2>
+      <p>Every feature your team leader asked for, wired into one investigation desk.</p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg></div>
+        <h3>AI / ML detection</h3>
+        <p>A trained TF-IDF + logistic regression model classifies each review as genuine or fake in real time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19V5m0 14h16M8 15l3-4 3 3 4-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>NLP text &amp; sentiment</h3>
+        <p>Language patterns, tone and sentiment extremity are parsed to understand how a review is written, not just what it says.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" stroke-linejoin="round"/></svg></div>
+        <h3>Suspicious pattern flags</h3>
+        <p>Keyword stuffing, excessive punctuation, incentive disclosures and repetition are surfaced as readable evidence.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20V10M18 20V4M6 20v-6" stroke-linecap="round"/></svg></div>
+        <h3>Confidence scoring</h3>
+        <p>Every verdict ships with a calibrated confidence percentage, not just a binary label.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 6l2 14h12l2-14M9 10v6M15 10v6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Bulk upload</h3>
+        <p>Drop a CSV of hundreds of reviews and get every verdict back in one batch pass.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 13h3M8 17h6" stroke-linecap="round"/></svg></div>
+        <h3>Insight dashboard</h3>
+        <p>Track verdict trends, review volume and fake-rate over time from a single overview.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg></div>
+        <h3>Search &amp; filter</h3>
+        <p>Find any past review instantly, filtered by verdict, keyword, or date analyzed.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke-linejoin="round"/><path d="M14 2v6h6" stroke-linejoin="round"/></svg></div>
+        <h3>Export reports</h3>
+        <p>Generate polished CSV or PDF case reports ready to share with your team.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-paper" id="how-it-works">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-eyebrow">Process</span>
+      <h2>From raw text to verdict in four steps.</h2>
+    </div>
+    <div class="process-rail">
+      <div class="process-step">
+        <span class="process-num">01</span>
+        <h3>Submit</h3>
+        <p>Paste a single review or upload a CSV of reviews for batch processing.</p>
+      </div>
+      <div class="process-step">
+        <span class="process-num">02</span>
+        <h3>Vectorize</h3>
+        <p>The text is cleaned and converted into TF-IDF features the model can reason about.</p>
+      </div>
+      <div class="process-step">
+        <span class="process-num">03</span>
+        <h3>Classify</h3>
+        <p>A trained ML model scores authenticity while a rule-based pass flags suspicious phrasing.</p>
+      </div>
+      <div class="process-step">
+        <span class="process-num">04</span>
+        <h3>Report</h3>
+        <p>Get a verdict, a confidence score, and evidence — logged to your dashboard and exportable anytime.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="container">
+    <h2>Stop guessing which reviews to trust.</h2>
+    <p>Create a free account and analyze your first review in under a minute.</p>
+    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Get started free</a>
+  </div>
+</section>
+
+{% endblock %}

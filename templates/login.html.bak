@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Sign in — Verdict{% endblock %}
+{% block content %}
+<section class="auth-shell">
+  <div class="auth-card">
+    <span class="eyebrow">Case Agent Access</span>
+    <h1>Sign in</h1>
+    <p class="sub">Pick up your investigation where you left off.</p>
+
+    <form method="POST" action="{{ url_for('login') }}" novalidate>
+      <div class="field">
+        <label for="username">Username or email</label>
+        <input type="text" id="username" name="username" placeholder="agent_smith" required autofocus>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+    </form>
+
+    <p class="auth-foot">New to Verdict? <a href="{{ url_for('register') }}">Create an account</a></p>
+  </div>
+</section>
+{% endblock %}

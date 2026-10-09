@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Analyze — Verdict{% endblock %}
+{% block content %}
+<section class="app-shell">
+  <div class="container">
+    <div class="app-header">
+      <div>
+        <span class="kicker">Investigation Desk</span>
+        <h1>Analyze a review</h1>
+        <p>Submit one review for an instant verdict, or upload a CSV to process a batch.</p>
+      </div>
+    </div>
+
+    <div class="analyze-tabs">
+      <button class="tab-btn active" data-tab="tab-single">Single review</button>
+      <button class="tab-btn" data-tab="tab-bulk">Bulk upload (CSV)</button>
+    </div>
+
+    <div class="analyze-grid">
+      <div>
+        <div id="tab-single" class="tab-panel active">
+          <div class="card textarea-wrap">
+            <form method="POST" action="{{ url_for('analyze') }}">
+              <div class="field">
+                <label for="review_text">Review text</label>
+                <textarea id="review_text" name="review_text" rows="9" placeholder="Paste the customer review you want to verify...">{{ review_text }}</textarea>
+                <div class="char-count" id="charCount">0 characters</div>
+              </div>
+              <div class="single-actions">
+                <button type="submit" class="btn btn-primary btn-block">Run detection</button>
+                <a href="{{ url_for('analyze') }}" class="btn btn-outline btn-block">Clear</a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div id="tab-bulk" class="tab-panel">
+          <div class="card textarea-wrap">
+            <form method="POST" action="{{ url_for('bulk_upload') }}" enctype="multipart/form-data">
+              <div class="dropzone" id="dropzone">
+                <input type="file" id="csv_file" name="csv_file" accept=".csv" hidden required>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="margin:0 auto;"><path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <div class="dz-title">Click to browse or drag a .csv file here</div>
+                <div class="dz-sub">One review per row, first column. Header row optional.</div>
+                <div class="dz-filename" id="dzFilename"></div>
+              </div>
+              <button type="submit" class="btn btn-secondary btn-block" style="margin-top:16px;">Upload &amp; analyze batch</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="card result-card">
+        {% if result %}
+          <div class="verdict-banner {{ result.prediction }}">
+            <div>
+              <div class="vb-label">{{ result.prediction }}</div>
+              <div class="vb-sub">Verdict issued for submitted review</div>
+            </div>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              {% if result.prediction == 'fake' %}
+                <circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6" stroke-linecap="round"/>
+              {% else %}
+                <circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9" stroke-linecap="round" stroke-linejoin="round"/>
+              {% endif %}
+            </svg>
+          </div>
+
+          <div class="confidence-meter">
+            <div class="cm-top">
+              <span>Confidence score</span>
+              <span>{{ result.confidence }}%</span>
+            </div>
+            <div class="cm-track">
+              <div class="cm-fill {{ result.prediction }}" data-target="{{ result.confidence }}" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div class="panel-head" style="margin-bottom:12px;">
+            <h2>Evidence &amp; signals</h2>
+            <span class="tag">{{ result.word_count }} words</span>
+          </div>
+          {% if result.suspicious_keywords %}
+            <div class="signal-list">
+              {% for s in result.suspicious_keywords %}
+                <div class="signal-item">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2.7 17a2 2 0 001.7 3h15.2a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span>{{ s }}</span>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="no-signals">No suspicious patterns detected in the text itself — the model's verdict is based on learned language patterns.</p>
+          {% endif %}
+        {% else %}
+          <div class="result-empty">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+            <p>Submit a review to see its verdict, confidence score, and evidence here.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

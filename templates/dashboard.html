@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Verdict{% endblock %}
+{% block content %}
+<section class="app-shell">
+  <div class="container">
+    <div class="app-header">
+      <div>
+        <span class="kicker">Overview</span>
+        <h1>Case dashboard</h1>
+        <p>A running summary of every review your account has analyzed.</p>
+      </div>
+      <a href="{{ url_for('analyze') }}" class="btn btn-outline">+ New analysis</a>
+    </div>
+
+    <div class="stat-cards">
+      <div class="card stat-card">
+        <div class="label">Total reviews analyzed</div>
+        <div class="value">{{ total }}</div>
+        <div class="sub">All time</div>
+      </div>
+      <div class="card stat-card accent-rust">
+        <div class="label">Flagged as fake</div>
+        <div class="value">{{ fake }}</div>
+        <div class="sub">{{ ((fake / total * 100) if total else 0) | round(1) }}% of total</div>
+      </div>
+      <div class="card stat-card accent-teal">
+        <div class="label">Verified genuine</div>
+        <div class="value">{{ genuine }}</div>
+        <div class="sub">{{ ((genuine / total * 100) if total else 0) | round(1) }}% of total</div>
+      </div>
+      <div class="card stat-card">
+        <div class="label">Avg. confidence</div>
+        <div class="value">{{ avg_conf }}%</div>
+        <div class="sub">Across all verdicts</div>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="card panel">
+        <div class="panel-head">
+          <h2>7-day verdict trend</h2>
+          <span class="tag">daily volume</span>
+        </div>
+        <div style="height:260px;">
+          <canvas id="trendChart"></canvas>
+        </div>
+      </div>
+      <div class="card panel">
+        <div class="panel-head">
+          <h2>Genuine vs fake ratio</h2>
+          <span class="tag">all time</span>
+        </div>
+        <div style="height:260px;">
+          <canvas id="ratioChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card panel">
+      <div class="panel-head">
+        <h2>Recent activity</h2>
+        <a href="{{ url_for('reports') }}" class="tag">view all reports &rarr;</a>
+      </div>
+      {% if recent %}
+        <div class="recent-list">
+          {% for r in recent %}
+            <div class="recent-item">
+              <span class="recent-text">{{ r['review_text'] }}</span>
+              <span class="badge {{ 'badge-fake' if r['prediction']=='fake' else 'badge-genuine' }}">{{ r['prediction'] }} · {{ r['confidence'] }}%</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="no-signals">No reviews analyzed yet. <a href="{{ url_for('analyze') }}" style="color: var(--teal-dim); font-weight:600;">Analyze your first review &rarr;</a></p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

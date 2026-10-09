@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Reports — Verdict{% endblock %}
+{% block content %}
+<section class="app-shell">
+  <div class="container">
+    <div class="app-header">
+      <div>
+        <span class="kicker">Case Archive</span>
+        <h1>Reports</h1>
+        <p>Search, filter, and export every review your account has analyzed.</p>
+      </div>
+    </div>
+
+    <form method="GET" action="{{ url_for('reports') }}" class="card filter-bar">
+      <input type="text" name="q" value="{{ q }}" placeholder="Search review text...">
+      <a href="{{ url_for('reports', status='all', q=q) }}" class="filter-chip {{ 'active' if status=='all' }}">All</a>
+      <a href="{{ url_for('reports', status='genuine', q=q) }}" class="filter-chip {{ 'active' if status=='genuine' }}">Genuine</a>
+      <a href="{{ url_for('reports', status='fake', q=q) }}" class="filter-chip {{ 'active' if status=='fake' }}">Fake</a>
+      <button type="submit" class="btn btn-outline btn-sm">Search</button>
+      <div class="export-actions">
+        <a href="{{ url_for('export_csv', status=status, q=q) }}" class="btn btn-ghost btn-sm">Export CSV</a>
+        <a href="{{ url_for('export_pdf', status=status, q=q) }}" class="btn btn-outline btn-sm">Export PDF</a>
+      </div>
+    </form>
+
+    <div class="card">
+      {% if rows %}
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Review</th>
+              <th>Verdict</th>
+              <th>Confidence</th>
+              <th>Signals</th>
+              <th>Source</th>
+              <th>Analyzed</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rows %}
+              <tr>
+                <td class="rt-review">{{ r['review_text'][:160] }}{% if r['review_text']|length > 160 %}&hellip;{% endif %}</td>
+                <td><span class="badge {{ 'badge-fake' if r['prediction']=='fake' else 'badge-genuine' }}">{{ r['prediction'] }}</span></td>
+                <td class="rt-conf">{{ r['confidence'] }}%</td>
+                <td class="rt-signals">{{ r['suspicious_keywords'] or '—' }}</td>
+                <td>{{ r['source'] }}</td>
+                <td class="rt-conf">{{ r['created_at'][:16].replace('T',' ') }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="rt-empty">
+          <p>No reviews match this filter yet.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

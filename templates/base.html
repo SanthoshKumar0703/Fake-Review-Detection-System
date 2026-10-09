@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Verdict — Fake Review Detection System{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="{{ url_for('home') }}" class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <circle cx="13" cy="13" r="11" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M8 13.5L11.2 16.7L18 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="brand-text">Verdict<span class="brand-dot">.</span></span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav-links" id="navLinks">
+      {% if is_logged_in %}
+        <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint=='dashboard' %}active{% endif %}">Dashboard</a>
+        <a href="{{ url_for('analyze') }}" class="nav-link {% if request.endpoint=='analyze' %}active{% endif %}">Analyze</a>
+        <a href="{{ url_for('reports') }}" class="nav-link {% if request.endpoint=='reports' %}active{% endif %}">Reports</a>
+        <span class="nav-user">Case Agent: <strong>{{ current_username }}</strong></span>
+        <a href="{{ url_for('logout') }}" class="btn btn-ghost btn-sm">Sign out</a>
+      {% else %}
+        <a href="{{ url_for('home') }}#features" class="nav-link">Features</a>
+        <a href="{{ url_for('home') }}#how-it-works" class="nav-link">How it works</a>
+        <a href="{{ url_for('login') }}" class="btn btn-ghost btn-sm">Sign in</a>
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm">Get started</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-stack">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">
+          <span>{{ message }}</span>
+          <button class="flash-close" onclick="this.parentElement.remove()">&times;</button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 26 26" fill="none">
+          <circle cx="13" cy="13" r="11" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M8 13.5L11.2 16.7L18 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      Verdict
+    </div>
+    <p class="footer-note">Case file analysis engine for review authenticity &middot; Academic project build</p>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>
